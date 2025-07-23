@@ -1,0 +1,88 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/delorenj"
+      ],
+      "alwaysAllow": [
+        "read_file",
+        "read_multiple_files",
+        "create_directory",
+        "list_directory",
+        "search_files",
+        "get_file_info",
+        "list_allowed_directories"
+      ]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "$BRAVE_API_KEY"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PERSONAL_ACCESS_TOKEN"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "alwaysAllow": [
+        "create_entities",
+        "create_relations",
+        "add_observations",
+        "delete_entities",
+        "delete_observations",
+        "delete_relations",
+        "read_graph",
+        "search_nodes",
+        "open_nodes"
+      ]
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@suekou/mcp-notion-server"],
+      "env": {
+        "NOTION_API_TOKEN": "$NOTION_API_TOKEN"
+      }
+    },
+    "mcp-installer": {
+      "command": "npx",
+      "args": ["-y", "@anaisbetts/mcp-installer"],
+      "disabled": false,
+      "alwaysAllow": []
+    },
+    "ragdocs": {
+      "command": "node",
+      "args": [
+        "/home/delorenj/.local/share/mise/installs/node/latest/lib/node_modules/@qpd-v/mcp-server-ragdocs/build/index.js"
+      ],
+      "env": {
+        "QDRANT_URL": "$QDRANT_URL",
+        "QDRANT_API_KEY": "$QDRANT_API_KEY",
+        "EMBEDDING_PROVIDER": "voyage",
+        "VOYAGE_API_KEY": "$VOYAGE_API_KEY"
+      }
+    },
+    "ticketmaster": {
+      "command": "node",
+      "args": ["/home/delorenj/code/mcp-server-ticketmaster/build/index.js"],
+      "env": {
+        "TICKETMASTER_API_KEY": "$TICKETMASTER_API_KEY"
+      },
+      "disabled": false,
+      "alwaysAllow": []
+    }
+  }
+}

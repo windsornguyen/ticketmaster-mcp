@@ -1,0 +1,51 @@
+{
+  "name": "@delorenj/mcp-server-ticketmaster",
+  "version": "0.2.5",
+  "description": "A Model Context Protocol server for discovering events, venues, and attractions through the Ticketmaster Discovery API",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "mcp-server-ticketmaster": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delorenj/mcp-server-ticketmaster.git"
+  },
+  "keywords": [
+    "mcp",
+    "ticketmaster",
+    "events",
+    "venues",
+    "attractions",
+    "discovery-api"
+  ],
+  "author": {
+    "name": "Jarad DeLorenzo",
+    "email": "jaradd@gmail.com",
+    "url": "https://github.com/delorenj"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/delorenj/mcp-server-ticketmaster/issues"
+  },
+  "homepage": "https://github.com/delorenj/mcp-server-ticketmaster#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.16.0",
+    "@playwright/test": "^1.54.1",
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "typescript": "^5.8.3"
+  }
+}
