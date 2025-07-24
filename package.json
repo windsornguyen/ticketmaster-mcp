@@ -5,16 +5,20 @@
   "private": false,
   "type": "module",
   "bin": {
-    "mcp-server-ticketmaster": "./build/index.js"
+    "mcp-server-ticketmaster": "./dist/index.js"
   },
   "files": [
-    "build"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "build": "tsc && node -e \"require('fs').chmodSync('dist/index.js', '755')\"",
+    "start": "node dist/index.js",
+    "start:http": "node dist/index.js --port 3006",
+    "dev": "tsx src/index.ts",
+    "dev:http": "tsx src/index.ts --port 3006",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+    "inspector": "npx @modelcontextprotocol/inspector dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -46,6 +50,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.8.3"
   }
 }
