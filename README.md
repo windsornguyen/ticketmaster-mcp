@@ -16,7 +16,7 @@ A Model Context Protocol server that provides tools for discovering events, venu
   - Structured JSON data for programmatic use
   - Human-readable text for direct consumption
 - **Rich Data**: Complete information including names, dates, prices, URLs, images, locations, and classifications
-- **HTTP-First Design**: Built for modern web integration with streamable HTTP transport
+- **Dual Transport Support**: Streamable HTTP for production deployment and STDIO for local development
 
 ## Installation & Setup
 
@@ -50,56 +50,57 @@ npm install -g @your-org/mcp-server-ticketmaster-discovery
 
 ## Configuration
 
-### For Streamable HTTP Transport (Recommended)
+### For Production Deployment (Streamable HTTP)
 
-Create a `.env` file in your project directory:
+Streamable HTTP transport is designed for cloud deployment and production use cases where the server runs as a web service.
 
+**Environment Configuration:**
 ```bash
+# Required
 TICKETMASTER_API_KEY=your-consumer-key-here
+
+# For cloud deployment
+PORT=8080                    # Port will be injected by cloud platform
+SERVER_URL=https://your-service.example.com  # Your service domain
+NODE_ENV=production
 ```
 
-Start the HTTP server:
-
+**Start the server:**
 ```bash
-# Start on default port 3002
-node build/index.js --port 3002
+# Cloud deployment (reads PORT from environment)
+npm start
 
-# Or specify a custom port
-node build/index.js --port 8080
+# Local testing with specific port
+npm run dev:shttp
 ```
 
-The server will display connection information:
-
-```
-Ticketmaster MCP Server listening on http://localhost:3002
-Put this in your client config:
-{
-  "mcpServers": {
-    "ticketmaster": {
-      "url": "http://localhost:3002/sse"
-    }
-  }
-}
-If your client supports streamable HTTP, you can use the /mcp endpoint instead.
-```
-
-### For MCP Clients Supporting HTTP
-
-Add to your MCP client configuration:
-
+**Client Configuration:**
 ```json
 {
   "mcpServers": {
     "ticketmaster": {
-      "url": "http://localhost:3002/mcp"
+      "url": "https://your-service.example.com/mcp"
     }
   }
 }
 ```
 
-### For STDIO Transport (Legacy)
+### For Local Development (STDIO)
 
-If your client only supports STDIO transport, you can configure:
+STDIO transport is designed for local development and testing. It cannot be deployed on cloud platforms as it requires direct process communication.
+
+**Environment Configuration:**
+```bash
+TICKETMASTER_API_KEY=your-consumer-key-here
+```
+
+**Start the server:**
+```bash
+# Local development
+npm run dev:stdio
+```
+
+**Client Configuration:**
 
 ```json
 {
@@ -162,7 +163,7 @@ Search for events, venues, or attractions on Ticketmaster.
 
 ```bash
 # Initialize session
-SESSION_ID=$(curl -s -D - http://localhost:3002/mcp \
+SESSION_ID=$(curl -s -D - http://localhost:3001/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -d '{
@@ -170,21 +171,21 @@ SESSION_ID=$(curl -s -D - http://localhost:3002/mcp \
     "id": 1,
     "method": "initialize",
     "params": {
-      "protocolVersion": "2024-11-05",
+      "protocolVersion": "2025-06-18",
       "capabilities": { "tools": {} },
       "clientInfo": { "name": "TestClient", "version": "1.0.0" }
     }
   }' | grep -i mcp-session-id | cut -d' ' -f2 | tr -d '\r')
 
 # Send initialized notification
-curl http://localhost:3002/mcp \
+curl http://localhost:3001/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -H "Mcp-Session-Id: $SESSION_ID" \
   -d '{"jsonrpc": "2.0", "method": "notifications/initialized"}'
 
 # Search for events
-curl http://localhost:3002/mcp \
+curl http://localhost:3001/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -H "Mcp-Session-Id: $SESSION_ID" \
@@ -231,22 +232,30 @@ npm run watch
 
 ### Transport Architecture
 
-This server supports multiple transport mechanisms:
+This server supports two transport mechanisms optimized for different use cases:
 
-- **Streamable HTTP** (`/mcp` endpoint): Modern, session-based transport with concurrent client support
-- **Server-Sent Events** (`/sse` endpoint): HTTP-compatible transport for basic MCP clients  
-- **STDIO**: Traditional transport for command-line integration
+#### Streamable HTTP Transport
+- **Use case**: Production deployment, cloud platforms, web integration
+- **Endpoint**: `/mcp` 
+- **Features**: Session-based, concurrent clients, scalable, health checks
+- **Deployment**: Compatible with cloud platforms (AWS, GCP, Azure, etc.)
 
-The HTTP transports provide better scalability and integration options for web-based applications.
+#### STDIO Transport  
+- **Use case**: Local development, testing, MCP client debugging
+- **Features**: Direct process communication, simple setup, ideal for development workflows
+- **Limitation**: Cannot be deployed on cloud platforms due to process communication requirements
 
 ### Testing
 
 ```bash
-# Test with MCP Inspector
+# Test with MCP Inspector (STDIO)
 npm run inspector
 
-# Manual HTTP testing
-node build/index.js --port 3002
+# Test STDIO transport
+npm run dev:stdio
+
+# Test HTTP transport locally
+npm run dev:shttp
 # Then use curl commands from examples above
 ```
 

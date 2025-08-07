@@ -1,28 +1,27 @@
 {
-  "name": "@delorenj/mcp-server-ticketmaster",
-  "version": "0.2.5",
+  "name": "@windsornguyen/ticketmaster-mcp",
+  "version": "0.1.0",
   "description": "A Model Context Protocol server for discovering events, venues, and attractions through the Ticketmaster Discovery API",
   "private": false,
   "type": "module",
   "bin": {
-    "mcp-server-ticketmaster": "./dist/index.js"
+    "ticketmaster-mcp": "./dist/index.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('dist/index.js', '755')\"",
-    "start": "node dist/index.js",
-    "start:http": "node dist/index.js --port 3006",
-    "dev": "tsx src/index.ts",
-    "dev:http": "tsx src/index.ts --port 3006",
-    "prepare": "npm run build",
+    "start": "node dist/index.js --port 3001",
+    "dev:stdio": "tsx src/index.ts",
+    "dev:shttp": "tsx src/index.ts --port 3001",
+    "prepare": "bun run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/delorenj/mcp-server-ticketmaster.git"
+    "url": "git+https://github.com/windsornguyen/ticketmaster-mcp.git"
   },
   "keywords": [
     "mcp",
@@ -33,24 +32,23 @@
     "discovery-api"
   ],
   "author": {
-    "name": "Jarad DeLorenzo",
-    "email": "jaradd@gmail.com",
-    "url": "https://github.com/delorenj"
+    "name": "Windsor Nguyen",
+    "url": "https://windsornguyen.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/delorenj/mcp-server-ticketmaster/issues"
+    "url": "https://github.com/windsornguyen/ticketmaster-mcp/issues"
   },
-  "homepage": "https://github.com/delorenj/mcp-server-ticketmaster#readme",
+  "homepage": "https://github.com/windsornguyen/ticketmaster-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.16.0",
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.54.2",
     "axios": "^1.11.0",
-    "dotenv": "^17.2.0"
+    "dotenv": "^17.2.1"
   },
   "devDependencies": {
-    "@types/node": "^24.1.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.8.3"
+    "@types/node": "^24.2.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   }
 }

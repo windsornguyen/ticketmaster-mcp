@@ -18,6 +18,9 @@ coverage/
 *.swp
 *.swo
 
+# LLMs
+**/.claude/
+
 # Logs
 logs/
 *.log
